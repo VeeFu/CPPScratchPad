@@ -10,6 +10,7 @@ enum class Color
     BLUE
 };
 
+
 class ColorDescription
 {
   public:
@@ -18,15 +19,16 @@ class ColorDescription
     std::string HelpText;
 };
 
+
 template <Color, typename desc_type = ColorDescription>
-class ColorDef
+class ConfigDef
 {
     using colorTag = Color;
 
-    ColorDef() = delete;
-    ColorDef(ColorDef const &) = delete;
-    ColorDef &operator=(ColorDef const &) = delete;
-    ~ColorDef() = delete;
+    ConfigDef() = delete;
+    ConfigDef(ConfigDef const &) = delete;
+    ConfigDef &operator=(ConfigDef const &) = delete;
+    ~ConfigDef() = delete;
 
     static desc_type desc;
 
@@ -45,19 +47,24 @@ class ColorDef
     }
 };
 
-#define COLORDEF(a,b,c) template <> ColorDescription ColorDef<Color::a>::desc = {#a, b, c}
+template <> 
+ColorDescription ConfigDef<Color::PURPLE>::desc = 
+    {"PURPLE", "The color of a ripe eggplant.", "The combination of blue and red."};
 
-COLORDEF(YELLOW, "The color of a ripe banana.",    "A primary color.");
+#define COLORDEF(a,b,c) template <> ColorDescription ConfigDef<Color::a>::desc = {#a, b, c}
+
 COLORDEF(RED,    "The color of a ripe strawberry", "primary color");
-COLORDEF(GREEN,  "The color of a ripe cucumber",   "primary color");
 COLORDEF(ORANGE, "The color of a ripe strawberry", "combination of red and yellow");
+COLORDEF(YELLOW, "The color of a ripe banana.",    "A primary color.");
+COLORDEF(GREEN,  "The color of a ripe cucumber",   "primary color");
 
 #undef COLORDEF
 
 #include <iostream>
 void test()
 {
-    std::cout << ColorDef<Color::RED>::getName() << std::endl;
+    std::cout << ConfigDef<Color::RED>::getName() << std::endl;
+//    std::cout << ConfigDef<Color::BLUE>::getName() << std::endl;
 }
 
 int main(int argc, char const *argv[])
