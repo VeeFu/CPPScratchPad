@@ -88,13 +88,16 @@ struct ConfigNamespace
 enum class ConfigTag : unsigned
 {
     FIRST_THING = 0,
-    SECOND_THING
+    SECOND_THING,
+    THIRD_THING
 };
 
 int main(int argc, char const *argv[])
 {
     ConfigContainer::insertDefinition(
         {ConfigTag::FIRST_THING, "first.thing", "This is the first thing", "", "First Default"});
+    // ideally want compile time error
+    // during ConfigDefinition creation
     ConfigContainer::insertDefinition({
         {ConfigTag::FIRST_THING, "first.thing", "This is the first thing", "", "First Default"},
         {ConfigTag::SECOND_THING, "second.thing", "This is the second thing", "", "Second Default"},
