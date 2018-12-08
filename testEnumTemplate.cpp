@@ -22,11 +22,13 @@ template <Color, typename desc_type = ColorDescription>
 class ColorDef
 {
     using colorTag = Color;
-    static desc_type desc;
+
     ColorDef() = delete;
     ColorDef(ColorDef const &) = delete;
     ColorDef &operator=(ColorDef const &) = delete;
     ~ColorDef() = delete;
+
+    static desc_type desc;
 
   public:
     static auto getDescription()
@@ -43,12 +45,14 @@ class ColorDef
     }
 };
 
-template <>
-ColorDescription ColorDef<Color::RED>::desc = {"RED", "The color of a ripe strawberry", "primary color"};
-template <>
-ColorDescription ColorDef<Color::GREEN>::desc = {"GREEN", "The color of a ripe cucumber", "primary color"};
-template <>
-ColorDescription ColorDef<Color::ORANGE>::desc = {"ORANGE", "The color of a ripe strawberry", "combination of red and yellow"};
+#define COLORDEF(a,b,c) template <> ColorDescription ColorDef<Color::a>::desc = {#a, b, c}
+
+COLORDEF(YELLOW, "The color of a ripe banana.",    "A primary color.");
+COLORDEF(RED,    "The color of a ripe strawberry", "primary color");
+COLORDEF(GREEN,  "The color of a ripe cucumber",   "primary color");
+COLORDEF(ORANGE, "The color of a ripe strawberry", "combination of red and yellow");
+
+#undef COLORDEF
 
 #include <iostream>
 void test()
