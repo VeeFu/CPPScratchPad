@@ -1,4 +1,6 @@
 #include <string>
+#include <array>
+#include <iterator>
 
 enum class Color
 {
@@ -9,6 +11,51 @@ enum class Color
     PURPLE,
     BLUE
 };
+
+
+constexpr bool compareStrings ( const char *first, const char *second)
+{
+    std::size_t firstLen = std::size(first);
+    std::size_t secondLen = std::size(second);
+    bool result = true;
+    if (firstLen != secondLen){
+        result = false;
+    } else {
+        std::size_t i = 0;
+        while (i < firstLen && i < secondLen){
+            result &= (first[i] == second[i]);
+        }
+    }
+    return result;
+}
+void f() {
+    compareStrings("RED", "RED");
+    compareStrings("red", "RED");
+    compareStrings("red1", "red");
+}
+
+// want to be able to write "RED"_c which yields the enum type Color::RED at compile-time
+constexpr Color operator "" _color(const char *strColor, std::size_t strSize){
+    
+    std::array<char const [], 1> colorArray1 = {{"RED"}};
+
+    std::array<char const [], 6> colorArray = {"RED","ORANGE","YELLOW","GREEN","PURPLE","BLUE"};
+    std::array<Color const, 6>  colorEnumArray = {Color::RED, Color::ORANGE, Color::YELLOW, Color::GREEN, Color::PURPLE, Color::BLUE};
+
+    static_assert(std::size(colorArray) == std::size(colorEnumArray));
+
+    std::size_t arrayIndex = 0;
+    while (arrayIndex < colorArray.size() ){
+        if (compareStrings(strColor, colorArray[arrayIndex])){
+            break;
+        }
+    }
+    //static_assert(arrayIndex < sizeof(colorArray));
+    return colorEnumArray[arrayIndex];
+}
+static_assert("RED"_color == Color::RED);
+//static_assert("red"_color == Color::RED);
+//static_assert("YELLOW"_color == Color::RED);
 
 
 class ColorDescription
