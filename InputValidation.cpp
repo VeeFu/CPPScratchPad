@@ -9,27 +9,6 @@
 
 #include "DataSource.h"
 
-namespace InputValidation {
-
-    struct InputData{
-
-    };
-
-    struct Validation{
-
-    };
-
-};
-
-
-using InputNameValue = std::pair <std::string, std::string>;
-void f() {
-
-};
-
-
-// platonic ideal
-
 DataSource ds({
     {"first_name",  "vince"},
     {"last_name",   "drake"},
@@ -39,26 +18,29 @@ DataSource ds({
     {"gender",      "m"}
 });
 
+
+template <typename T, typename StringType>
+struct Validators{
+    using StringList = std::vector<StringType>;
+
+    static auto OneOf(const StringList &strCollection)
+    {
+        return [&strCollection](const StringType &str)
+        {
+            auto res = std::find_if(
+                std::cbegin(strCollection), 
+                std::cend(strCollection), 
+                str);
+            return res != strCollection.cend();
+        };
+    }
+};
+
 template <typename T>
 struct InputField{
     using data_type = T;
     std::string name;
     T data;
-};
-
-template <typename T, typename StringType>
-struct Validators{
-    struct OneOf{
-        static auto OneOf(auto &strCollection){
-            return [&strCollection](const &StringType str){
-                auto res = std::find_if(
-                    std::cbegin(strCollection), 
-                    std::cend(strCollection), 
-                    str);
-                return res != strCollection.cend();
-            };
-        }
-    };
 };
 
 template <typename T>
@@ -85,22 +67,3 @@ void controlHandler(const DataSource &ds){
         .maxLength(100);
 */
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
