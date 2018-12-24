@@ -63,11 +63,11 @@ struct ValidatedInputField : public InputField<T, StringType>{
 
 void test (){
     DataSource ds({
-        {"first_name",  "vince"},
-        {"last_name",   "drake"},
-        {"birth_state", "California"},
-        {"birth_date",  "02-15-1977"},
-        {"siblings",    "7"},
+        {"first_name",  "tim"},
+        {"last_name",   "danforth"},
+        {"birth_state", "Wyoming"},
+        {"birth_date",  "03-22-1987"},
+        {"siblings",    "3"},
         {"gender",      "m"}
     });
     ValidatedInputField<std::string, std::string> BirthState;

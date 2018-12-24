@@ -14,12 +14,12 @@ void printOptional(const std::optional<T> &optValue) {
 }
 
 DataSource ds({
-    {"first_name",  "vince"},
-    {"last_name",   "drake"},
-    {"birth_state", "California"},
-    {"birth_date",  "02-15-1977"},
-    {"siblings",    "7"},
-    {"gender",      "m"}
+        {"first_name",  "tim"},
+        {"last_name",   "danforth"},
+        {"birth_state", "Wyoming"},
+        {"birth_date",  "03-22-1987"},
+        {"siblings",    "3"},
+        {"gender",      "m"}
 });
 
 TEST_CASE("Datasource cannot convert \"m\" into float"){
