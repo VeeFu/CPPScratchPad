@@ -5,23 +5,17 @@
 #include <sstream>
 #include <utility>
 #include <optional>
-#include <typeinfo>
+//#include <typeinfo>
+#include <functional>
 
 #include "DataSource.h"
-
-DataSource ds({
-    {"first_name",  "vince"},
-    {"last_name",   "drake"},
-    {"birth_state", "California"},
-    {"birth_date",  "02-15-1977"},
-    {"siblings",    "7"},
-    {"gender",      "m"}
-});
 
 
 template <typename T, typename StringType>
 struct Validators{
     using StringList = std::vector<StringType>;
+    using StringValidator = std::function<bool(const StringType&)>;
+    using StringValidatorList = std::vector<StringValidator>;
 
     static auto OneOf(const StringList &strCollection)
     {
@@ -36,17 +30,49 @@ struct Validators{
     }
 };
 
-template <typename T>
+template <typename T, typename StringType>
 struct InputField{
     using data_type = T;
-    std::string name;
-    T data;
+    using string_type = StringType;
+
+    StringType name;
+    StringType dataString;
+    T dataNative;
 };
 
-template <typename T>
-struct ValidatedInputField : public InputField<T>{
+template <typename T, typename StringType>
+struct ValidatedInputField : public InputField<T, StringType>{
+    using typename Validators<T, StringType>::StringValidatorList;
+    using typename Validators<T, StringType>::StringValidator;
 
+    StringValidatorList conditions;
+
+    ValidatedInputField& addValidator(StringValidator &&v){
+        conditions.emplace_back(v);
+        return *this;
+    }
+
+    bool Validate(){
+        bool result = true;
+        for (auto v : conditions){
+            result &= v(this->dataString);
+        }
+        return result;
+    }
 };
+
+void test (){
+    DataSource ds({
+        {"first_name",  "vince"},
+        {"last_name",   "drake"},
+        {"birth_state", "California"},
+        {"birth_date",  "02-15-1977"},
+        {"siblings",    "7"},
+        {"gender",      "m"}
+    });
+    ValidatedInputField<std::string, std::string> BirthState;
+
+}
 
 
 void controlHandler(const DataSource &ds){
