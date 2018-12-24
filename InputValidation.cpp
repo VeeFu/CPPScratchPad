@@ -7,6 +7,8 @@
 #include <optional>
 #include <typeinfo>
 
+#include "DataSource.h"
+
 namespace InputValidation {
 
     struct InputData{
@@ -36,6 +38,33 @@ DataSource ds({
     {"siblings",    "7"},
     {"gender",      "m"}
 });
+
+template <typename T>
+struct InputField{
+    using data_type = T;
+    std::string name;
+    T data;
+};
+
+template <typename T, typename StringType>
+struct Validators{
+    struct OneOf{
+        static auto OneOf(auto &strCollection){
+            return [&strCollection](const &StringType str){
+                auto res = std::find_if(
+                    std::cbegin(strCollection), 
+                    std::cend(strCollection), 
+                    str);
+                return res != strCollection.cend();
+            };
+        }
+    };
+};
+
+template <typename T>
+struct ValidatedInputField : public InputField<T>{
+
+};
 
 
 void controlHandler(const DataSource &ds){

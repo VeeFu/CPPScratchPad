@@ -13,7 +13,8 @@
                 "-std=c++17",
                 "-march=x86-64",
                 "-g",
-                "-Wall"
+                "-Wall",
+                "-I/home/vdrake/src/cpp/Catch2/"
             ],
             "group": {
                 "kind": "build",
