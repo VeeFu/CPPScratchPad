@@ -9,7 +9,7 @@
             "command": "g++-8",
             "args": [
                 "${fileBasename}",
-                "-o${fileBasenameNoExtension}",
+                "-o/bin/${fileBasenameNoExtension}",
                 "-std=c++17",
                 "-march=x86-64",
                 "-g",
