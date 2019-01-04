@@ -8,8 +8,8 @@
             "type": "shell",
             "command": "g++-8",
             "args": [
-                "${fileBasename}",
-                "-o/bin/${fileBasenameNoExtension}",
+                "${fileDirname}/${fileBasename}",
+                "-o${cwd}/bin/${fileBasenameNoExtension}",
                 "-std=c++17",
                 "-march=x86-64",
                 "-g",
