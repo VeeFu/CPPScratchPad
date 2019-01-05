@@ -2,6 +2,7 @@
 #include <tuple>
 #include <vector>
 #include <utility>
+#include <functional>
 
 template <typename T>
 void print_vec(std::vector<T> &v){
@@ -25,8 +26,27 @@ void f(){
     std::apply([&](auto& ...x){(..., print_vec(x));}, the_tuple2);
 }
 
+struct Foo{
+    int m_thing = 10;
+    void FooFunc(int i){
+        std::cout << "FooFunc(" << i <<") : "<< (i*m_thing) << "\n";
+    }
+};
+
+void g() {
+
+    Foo foo;
+    auto i = std::make_tuple(&Foo::FooFunc, foo, 10 );
+    std::invoke(&Foo::FooFunc, foo, 10);
+}
+
+struct NamedMembers{
+    static inline std::tuple<std::pair
+};
+
 int main(int argc, char const *argv[])
 {
+    g();
     f();
     return 0;
 }
